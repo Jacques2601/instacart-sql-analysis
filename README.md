@@ -1,2 +1,2 @@
 # instacart-sql-analysis
-This repository contains SQL queries used for exploratory and descriptive analysis of the Instacart online grocery shopping dataset. It includes joins, subqueries, CTEs, and aggregation logic used to uncover customer purchasing patterns, product popularity, and time-based ordering behavior.
+SQL-based data analysis project for Rockbuster Stealth, a movie rental company transitioning to online streaming. Includes queries to support launch strategy, customer segmentation, and geographic revenue trends.
