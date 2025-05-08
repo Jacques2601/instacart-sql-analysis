@@ -12,26 +12,24 @@ WITH TopCustomers AS (
     INNER JOIN city D ON C.city_id = D.city_id
     INNER JOIN country E ON D.country_id = E.country_id
     WHERE D.city IN (
-        SELECT city FROM (
-            SELECT C.city, COUNT(A.customer_id) AS customer_count
-            FROM customer A
-            INNER JOIN address B ON A.address_id = B.address_id
-            INNER JOIN city C ON B.city_id = C.city_id
-            INNER JOIN country D ON C.country_id = D.country_id
-            WHERE D.country IN (
-                SELECT D.country
-                FROM customer A
-                INNER JOIN address B ON A.address_id = B.address_id
-                INNER JOIN city C ON B.city_id = C.city_id
-                INNER JOIN country D ON C.country_id = D.country_id
-                GROUP BY D.country
-                ORDER BY COUNT(A.customer_id) DESC
-                LIMIT 10
-            )
-            GROUP BY C.city
-            ORDER BY COUNT(A.customer_id) DESC
+        SELECT C.city
+        FROM customer CUST1
+        INNER JOIN address ADDR1 ON CUST1.address_id = ADDR1.address_id
+        INNER JOIN city C ON ADDR1.city_id = C.city_id
+        INNER JOIN country CNT1 ON C.country_id = CNT1.country_id
+        WHERE CNT1.country IN (
+            SELECT CNT2.country
+            FROM customer CUST2
+            INNER JOIN address ADDR2 ON CUST2.address_id = ADDR2.address_id
+            INNER JOIN city CTY2 ON ADDR2.city_id = CTY2.city_id
+            INNER JOIN country CNT2 ON CTY2.country_id = CNT2.country_id
+            GROUP BY CNT2.country
+            ORDER BY COUNT(CUST2.customer_id) DESC
             LIMIT 10
-        ) AS TopCities
+        )
+        GROUP BY C.city
+        ORDER BY COUNT(CUST1.customer_id) DESC
+        LIMIT 10
     )
     GROUP BY B.customer_id, B.first_name, B.last_name, D.city, E.country
     ORDER BY SUM(A.amount) DESC
