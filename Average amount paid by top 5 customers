@@ -1,3 +1,7 @@
+-- This SQL query calculates the **average total payment** made by the top 5 highest-paying customers 
+-- who are located in the top 10 most populous cities, within the top 10 countries by customer count.
+
+-- Step 1: Identify the top 10 countries based on number of customers.
 WITH top_ten_countries AS (
     SELECT cnt1.country
     FROM customer AS cust1
@@ -8,6 +12,8 @@ WITH top_ten_countries AS (
     ORDER BY COUNT(cust1.customer_id) DESC
     LIMIT 10
 ),
+
+-- Step 2: Within those top 10 countries, find the top 10 cities also based on customer count.
 top_ten_cities AS (
     SELECT cty2.city
     FROM customer AS cust2
@@ -19,6 +25,8 @@ top_ten_cities AS (
     ORDER BY COUNT(cust2.customer_id) DESC
     LIMIT 10
 ),
+
+-- Step 3: From those top cities, select the top 5 customers based on total amount paid.
 top_five_customers AS (
     SELECT SUM(pmt3.amount) AS amount
     FROM payment AS pmt3
@@ -31,5 +39,7 @@ top_five_customers AS (
     ORDER BY amount DESC
     LIMIT 5
 )
+
+-- Final Step: Calculate the average payment among those top 5 customers.
 SELECT AVG(amount)
 FROM top_five_customers;
