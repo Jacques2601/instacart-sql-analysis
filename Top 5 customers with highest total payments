@@ -1,4 +1,11 @@
+-- This Common Table Expression (CTE) identifies the top 5 customers by total payment amount.
+-- The selection is limited to customers who live in the top 10 cities, 
+-- which themselves belong to the top 10 countries with the highest number of customers.
+
 WITH TopCustomers AS (
+
+    -- Aggregate payment data by customer, joining with address, city, and country tables
+    -- to include location information.
     SELECT 
         B.customer_id,
         B.first_name AS customer_first_name,
@@ -11,6 +18,9 @@ WITH TopCustomers AS (
     INNER JOIN address C ON B.address_id = C.address_id
     INNER JOIN city D ON C.city_id = D.city_id
     INNER JOIN country E ON D.country_id = E.country_id
+
+    -- Filter to include only customers from the top 10 cities
+    -- within the top 10 countries by customer count.
     WHERE D.city IN (
         SELECT C.city
         FROM customer CUST1
@@ -18,6 +28,7 @@ WITH TopCustomers AS (
         INNER JOIN city C ON ADDR1.city_id = C.city_id
         INNER JOIN country CNT1 ON C.country_id = CNT1.country_id
         WHERE CNT1.country IN (
+            -- Identify the top 10 countries based on number of customers
             SELECT CNT2.country
             FROM customer CUST2
             INNER JOIN address ADDR2 ON CUST2.address_id = ADDR2.address_id
@@ -31,11 +42,15 @@ WITH TopCustomers AS (
         ORDER BY COUNT(CUST1.customer_id) DESC
         LIMIT 10
     )
+
+    -- Group by customer and location fields to prepare for top customer filtering
     GROUP BY B.customer_id, B.first_name, B.last_name, D.city, E.country
     ORDER BY SUM(A.amount) DESC
     LIMIT 5
 )
 
+-- Final SELECT: Display top 5 customers along with the average payment amount
+-- for comparison and benchmarking purposes.
 SELECT 
     customer_id,
     customer_first_name,
