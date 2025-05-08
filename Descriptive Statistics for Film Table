@@ -1,28 +1,39 @@
+-- This query calculates descriptive statistics for selected numerical columns 
+-- from the `film` table in a video rental database.
+-- It provides insights into data ranges and completeness for each field.
+
 SELECT 
+    -- Descriptive stats for the 'release_year' column
     MIN(release_year) AS min_release_year,
     MAX(release_year) AS max_release_year,
     AVG(release_year) AS avg_release_year,
     COUNT(release_year) AS release_year_count,
 
+    -- Descriptive stats for the 'rental_duration' column
     MIN(rental_duration) AS min_rental_duration,
     MAX(rental_duration) AS max_rental_duration,
     AVG(rental_duration) AS avg_rental_duration,
     COUNT(rental_duration) AS rental_duration_count,
 
+    -- Descriptive stats for the 'rental_rate' column
     MIN(rental_rate) AS min_rental_rate,
     MAX(rental_rate) AS max_rental_rate,
     AVG(rental_rate) AS avg_rental_rate,
     COUNT(rental_rate) AS rental_rate_count,
 
+    -- Descriptive stats for the 'length' column (film duration)
     MIN(length) AS min_length,
     MAX(length) AS max_length,
     AVG(length) AS avg_length,
     COUNT(length) AS length_count,
 
+    -- Descriptive stats for the 'replacement_cost' column
     MIN(replacement_cost) AS min_replacement_cost,
     MAX(replacement_cost) AS max_replacement_cost,
     AVG(replacement_cost) AS avg_replacement_cost,
     COUNT(replacement_cost) AS replacement_cost_count,
 
+    -- Total number of rows in the film table (useful for completeness checks)
     COUNT(*) AS total_rows
+
 FROM film;
