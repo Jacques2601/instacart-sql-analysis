@@ -1,0 +1,48 @@
+WITH top_ten_countries (country) AS (
+    SELECT cnt1.country 
+    FROM customer AS cust1
+    INNER JOIN address AS addr1 ON cust1.address_id = addr1.address_id
+    INNER JOIN city AS cty1 ON addr1.city_id = cty1.city_id
+    INNER JOIN country AS cnt1 ON cty1.country_id = cnt1.country_id
+    GROUP BY cnt1.country
+    ORDER BY COUNT(cust1.customer_id) DESC
+    LIMIT 10
+),
+top_ten_cities (city) AS (
+    SELECT cty2.city
+    FROM customer AS cust2
+    INNER JOIN address AS addr2 ON cust2.address_id = addr2.address_id
+    INNER JOIN city AS cty2 ON addr2.city_id = cty2.city_id
+    INNER JOIN country AS cnt2 ON cty2.country_id = cnt2.country_id
+    INNER JOIN top_ten_countries ON top_ten_countries.country = cnt2.country
+    GROUP BY cty2.city
+    ORDER BY COUNT(cust2.customer_id) DESC
+    LIMIT 10
+),
+top_five_customers (customer_id, city, country, total_amount_paid) AS (
+    SELECT 
+        cust3.customer_id, 
+        cty3.city, 
+        cnt3.country,
+        SUM(pmt3.amount) AS total_amount_paid
+    FROM payment AS pmt3
+    INNER JOIN customer AS cust3 ON pmt3.customer_id = cust3.customer_id
+    INNER JOIN address AS addr3 ON cust3.address_id = addr3.address_id
+    INNER JOIN city AS cty3 ON addr3.city_id = cty3.city_id
+    INNER JOIN country AS cnt3 ON cty3.country_id = cnt3.country_id
+    INNER JOIN top_ten_cities ON top_ten_cities.city = cty3.city
+    GROUP BY cust3.customer_id, cty3.city, cnt3.country
+    ORDER BY total_amount_paid DESC
+    LIMIT 5
+)
+SELECT 
+    cnt4.country, 
+    COUNT(DISTINCT cust4.customer_id) AS all_customer_count,
+    COUNT(DISTINCT top_five_customers.customer_id) AS top_customer_count
+FROM customer AS cust4
+INNER JOIN address AS addr4 ON cust4.address_id = addr4.address_id
+INNER JOIN city AS cty4 ON addr4.city_id = cty4.city_id
+INNER JOIN country AS cnt4 ON cty4.country_id = cnt4.country_id
+LEFT JOIN top_five_customers ON top_five_customers.country = cnt4.country
+GROUP BY cnt4.country
+ORDER BY top_customer_count DESC;
