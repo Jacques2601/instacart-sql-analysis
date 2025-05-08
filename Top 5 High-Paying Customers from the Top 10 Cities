@@ -1,3 +1,8 @@
+-- This SQL query identifies the top 5 highest-paying customers based on total payment amount.
+-- The analysis is limited to customers who live in the top 10 cities, 
+-- which are themselves located in the top 10 countries based on customer volume.
+
+-- Step 1: Select the top 10 countries with the highest number of customers.
 WITH top_countries AS (
     SELECT D.country
     FROM customer A
@@ -8,6 +13,8 @@ WITH top_countries AS (
     ORDER BY COUNT(A.customer_id) DESC
     LIMIT 10
 ),
+
+-- Step 2: From those top countries, select the top 10 cities by customer count.
 top_cities AS (
     SELECT C.city
     FROM customer A
@@ -19,6 +26,8 @@ top_cities AS (
     ORDER BY COUNT(A.customer_id) DESC
     LIMIT 10
 )
+
+-- Final Step: Identify the top 5 customers (by total payment) who live in the top 10 cities.
 SELECT
     B.customer_id,
     B.first_name AS customer_first_name,
