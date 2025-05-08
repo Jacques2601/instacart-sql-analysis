@@ -1,3 +1,9 @@
+-- This SQL query analyzes customer distribution by country, focusing specifically on
+-- how many of the top 5 highest-paying customers live in each country.
+-- It filters through customer demographics in top cities and countries
+-- to determine which regions contain the most valuable customers.
+
+-- Step 1: Identify the top 10 countries with the most customers.
 WITH top_ten_countries (country) AS (
     SELECT cnt1.country 
     FROM customer AS cust1
@@ -8,6 +14,8 @@ WITH top_ten_countries (country) AS (
     ORDER BY COUNT(cust1.customer_id) DESC
     LIMIT 10
 ),
+
+-- Step 2: Identify the top 10 cities (by customer count) that are located in those top 10 countries.
 top_ten_cities (city) AS (
     SELECT cty2.city
     FROM customer AS cust2
@@ -19,6 +27,9 @@ top_ten_cities (city) AS (
     ORDER BY COUNT(cust2.customer_id) DESC
     LIMIT 10
 ),
+
+-- Step 3: From those cities, identify the top 5 customers who have paid the highest total amounts.
+-- This captures high-value customers from high-volume cities and countries.
 top_five_customers (customer_id, city, country, total_amount_paid) AS (
     SELECT 
         cust3.customer_id, 
@@ -35,14 +46,18 @@ top_five_customers (customer_id, city, country, total_amount_paid) AS (
     ORDER BY total_amount_paid DESC
     LIMIT 5
 )
+
+-- Final Step: Compare each country’s total number of customers to the number of top 5 customers it contains.
 SELECT 
     cnt4.country, 
-    COUNT(DISTINCT cust4.customer_id) AS all_customer_count,
-    COUNT(DISTINCT top_five_customers.customer_id) AS top_customer_count
+    COUNT(DISTINCT cust4.customer_id) AS all_customer_count, -- Total customers per country
+    COUNT(DISTINCT top_five_customers.customer_id) AS top_customer_count -- Top 5 customers per country
 FROM customer AS cust4
 INNER JOIN address AS addr4 ON cust4.address_id = addr4.address_id
 INNER JOIN city AS cty4 ON addr4.city_id = cty4.city_id
 INNER JOIN country AS cnt4 ON cty4.country_id = cnt4.country_id
+
+-- Left join ensures all countries appear, even if they don’t have a top customer.
 LEFT JOIN top_five_customers ON top_five_customers.country = cnt4.country
 GROUP BY cnt4.country
 ORDER BY top_customer_count DESC;
