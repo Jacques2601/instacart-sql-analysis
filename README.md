@@ -8,7 +8,7 @@ This portfolio project demonstrates the use of **PostgreSQL** to answer complex 
 
 ---
 
-## 📊 Key Questions Answered
+## Key Questions Answered
 
 1. **What is the average amount spent by the top 5 customers in the top 10 cities?**
 2. **How many top customers are located in each country?**
@@ -18,7 +18,7 @@ This portfolio project demonstrates the use of **PostgreSQL** to answer complex 
 
 ---
 
-## 💪 Tools Used
+## Tools Used
 
 * **PostgreSQL** for querying the data
 * **Tableau** *(optional for visualizations – add link if used)*
@@ -26,13 +26,13 @@ This portfolio project demonstrates the use of **PostgreSQL** to answer complex 
 
 ---
 
-## 🗃️ Data Source
+## Data Source
 
 The analysis is based on the **PostgreSQL DVD Rental Sample Database**, which simulates a real-world video rental business. It includes tables such as `customer`, `address`, `city`, `country`, `payment`, and `film`.
 
 ---
 
-## 📁 Query Summaries
+## Query Summaries
 
 ### 1. **Top Customer Average Payment Analysis**
 
@@ -76,7 +76,7 @@ The analysis is based on the **PostgreSQL DVD Rental Sample Database**, which si
 
 ---
 
-## 📌 How to Use
+## How to Use
 
 1. Clone or fork this repository.
 2. Import the [DVD Rental sample database](https://www.postgresqltutorial.com/postgresql-sample-database/) into PostgreSQL.
@@ -85,7 +85,7 @@ The analysis is based on the **PostgreSQL DVD Rental Sample Database**, which si
 
 ---
 
-## 📊 Next Steps (Optional Enhancements)
+## Next Steps (Optional Enhancements)
 
 * Create Tableau dashboards for top customer mapping, payment distributions, and film inventory insights.
 * Add Python notebooks for deeper statistical analysis or forecasting.
