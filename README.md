@@ -2,6 +2,8 @@
 
 SQL-based data analysis project for **Rockbuster Stealth**, a global movie rental company adapting its business model for online streaming. This project focuses on customer segmentation, geographic revenue distribution, rental statistics, and high-value behavior analysis using advanced SQL techniques.
 
+View this project in my portfolio presentation: [Google Slides Portfolio](https://docs.google.com/presentation/d/1qkxnA_wyYDSZGrbO7H8aNu45hsYfwUvO/edit?slide=id.p1#slide=id.p1)
+
 ## Project Purpose
 
 This portfolio project demonstrates the use of **PostgreSQL** to answer complex business questions that support Rockbuster’s strategy to compete with platforms like Netflix. The queries make use of **CTEs, joins, aggregations, and subqueries** to explore the customer base, top spenders, high-volume regions, and key product metrics.
